@@ -1,0 +1,19 @@
+{
+  "name": "IRON COACH",
+  "short_name": "IRON COACH",
+  "description": "Личный фитнес-коуч: турник, свой вес, техника и мышцы",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
