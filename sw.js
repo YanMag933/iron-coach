@@ -1,4 +1,4 @@
-const CACHE = "iron-coach-v4";
+const CACHE = "iron-coach-v5";
 const ASSETS = [
   "./",
   "./index.html",
@@ -17,11 +17,21 @@ const ASSETS = [
   "./assets/exercises/scap_pull-form.png",
   "./assets/exercises/australian_row-form.png",
   "./assets/exercises/dip-form.png",
+  "./assets/exercises/weighted_dip-form.png",
   "./assets/exercises/pushup-form.png",
+  "./assets/exercises/diamond_pushup-form.png",
   "./assets/exercises/pike_pushup-form.png",
   "./assets/exercises/hanging_knee-form.png",
   "./assets/exercises/hanging_leg-form.png",
   "./assets/exercises/dead_hang-form.png",
+  "./assets/exercises/plate_press-form.png",
+  "./assets/exercises/plate_raise-form.png",
+  "./assets/exercises/plate_squat-form.png",
+  "./assets/exercises/plate_twist-form.png",
+  "./assets/exercises/plate_row-form.png",
+  "./assets/exercises/plank-form.png",
+  "./assets/exercises/hollow_hold-form.png",
+  "./assets/exercises/crunch-form.png",
   "./assets/muscles/muscles-pull.png",
   "./assets/muscles/muscles-push.png",
   "./assets/muscles/muscles-core.png",

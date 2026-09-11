@@ -125,8 +125,12 @@
           Есть пояс / отягощение
         </label>
         <label class="field" style="display:flex;gap:10px;align-items:center;color:var(--text)">
-          <input type="checkbox" name="hasDips" ${p.hasDips ? "checked" : ""} style="width:auto" />
+          <input type="checkbox" name="hasDips" ${p.hasDips !== false ? "checked" : ""} style="width:auto" />
           Есть брусья
+        </label>
+        <label class="field" style="display:flex;gap:10px;align-items:center;color:var(--text)">
+          <input type="checkbox" name="hasPlates" ${p.hasPlates !== false ? "checked" : ""} style="width:auto" />
+          Есть блины / диск
         </label>
       </div>
       <button class="btn block pulse" type="submit">Собрать программу</button>
@@ -148,6 +152,7 @@
         goal: String(fd.get("goal")),
         hasBelt: fd.get("hasBelt") === "on",
         hasDips: fd.get("hasDips") === "on",
+        hasPlates: fd.get("hasPlates") === "on",
         onboarded: true,
         createdAt: state.profile.createdAt || new Date().toISOString(),
       };
@@ -520,7 +525,8 @@
       <div class="row between"><span class="muted">Подтягивания макс</span><strong>${p.pullupMax}</strong></div>
       <div class="row between"><span class="muted">Weighted макс</span><strong>${p.weightedMax} кг</strong></div>
       <div class="row between"><span class="muted">Пояс</span><strong>${p.hasBelt ? "да" : "нет"}</strong></div>
-      <div class="row between"><span class="muted">Брусья</span><strong>${p.hasDips ? "да" : "нет"}</strong></div>
+      <div class="row between"><span class="muted">Брусья</span><strong>${p.hasDips !== false ? "да" : "нет"}</strong></div>
+      <div class="row between"><span class="muted">Блины</span><strong>${p.hasPlates !== false ? "да" : "нет"}</strong></div>
     </div>
     <div class="stack" style="margin-top:12px">
       <button type="button" class="btn secondary block" id="edit-profile">Изменить анкету</button>
@@ -584,7 +590,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js?v=3").catch(() => {});
+      navigator.serviceWorker.register("./sw.js?v=5").catch(() => {});
     });
   }
 })();
