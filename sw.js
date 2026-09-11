@@ -10,6 +10,7 @@ const ASSETS = [
   "./js/app.js",
   "./manifest.json",
   "./icon.svg",
+  "./reset.html",
 ];
 
 self.addEventListener("install", (e) => {
@@ -27,17 +28,22 @@ self.addEventListener("activate", (e) => {
 self.addEventListener("fetch", (e) => {
   if (e.request.method !== "GET") return;
   const url = new URL(e.request.url);
-  // Сеть важнее кэша для HTML/JS/CSS — иначе телефон залипает на старой версии
-  if (url.origin === self.location.origin) {
-    e.respondWith(
-      fetch(e.request)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(e.request, copy));
-          return res;
-        })
-        .catch(() => caches.match(e.request).then((c) => c || caches.match("./index.html")))
-    );
+  if (url.origin !== self.location.origin) return;
+
+  // sw.js никогда из кэша — иначе обновления блокируются
+  if (url.pathname.endsWith("/sw.js") || url.pathname.endsWith("sw.js")) {
+    e.respondWith(fetch(e.request));
     return;
   }
+
+  // сеть важнее кэша
+  e.respondWith(
+    fetch(e.request)
+      .then((res) => {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(e.request, copy));
+        return res;
+      })
+      .catch(() => caches.match(e.request).then((c) => c || caches.match("./index.html")))
+  );
 });

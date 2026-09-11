@@ -11,7 +11,27 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="icon.svg" />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/styles.css?v=3" />
+    <script>
+      // Если залип старый service worker — один раз сбрасываем кэш
+      (function () {
+        var VER = "3";
+        try {
+          if (localStorage.getItem("iron-coach-ver") === VER) return;
+          localStorage.setItem("iron-coach-ver", VER);
+          if (!("serviceWorker" in navigator)) return;
+          navigator.serviceWorker.getRegistrations().then(function (regs) {
+            return Promise.all(regs.map(function (r) { return r.unregister(); })).then(function () {
+              return caches.keys();
+            }).then(function (keys) {
+              return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+            }).then(function () {
+              location.replace("./reset.html");
+            });
+          });
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="shell" class="shell">
