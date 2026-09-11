@@ -1,4 +1,4 @@
-const CACHE = "iron-coach-v3";
+const CACHE = "iron-coach-v4";
 const ASSETS = [
   "./",
   "./index.html",
@@ -11,6 +11,25 @@ const ASSETS = [
   "./manifest.json",
   "./icon.svg",
   "./reset.html",
+  "./assets/exercises/pullup-form.png",
+  "./assets/exercises/weighted_pullup-form.png",
+  "./assets/exercises/chinup-form.png",
+  "./assets/exercises/scap_pull-form.png",
+  "./assets/exercises/australian_row-form.png",
+  "./assets/exercises/dip-form.png",
+  "./assets/exercises/pushup-form.png",
+  "./assets/exercises/pike_pushup-form.png",
+  "./assets/exercises/hanging_knee-form.png",
+  "./assets/exercises/hanging_leg-form.png",
+  "./assets/exercises/dead_hang-form.png",
+  "./assets/muscles/muscles-pull.png",
+  "./assets/muscles/muscles-push.png",
+  "./assets/muscles/muscles-core.png",
+  "./assets/muscles/muscles-chin.png",
+  "./assets/muscles/muscles-shoulders.png",
+  "./assets/muscles/muscles-grip.png",
+  "./assets/muscles/weighted_pullup-muscles.png",
+  "./assets/muscles/dip-muscles.png",
 ];
 
 self.addEventListener("install", (e) => {
@@ -30,13 +49,11 @@ self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
   if (url.origin !== self.location.origin) return;
 
-  // sw.js никогда из кэша — иначе обновления блокируются
   if (url.pathname.endsWith("/sw.js") || url.pathname.endsWith("sw.js")) {
     e.respondWith(fetch(e.request));
     return;
   }
 
-  // сеть важнее кэша
   e.respondWith(
     fetch(e.request)
       .then((res) => {

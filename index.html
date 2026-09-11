@@ -11,11 +11,11 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="icon.svg" />
-    <link rel="stylesheet" href="css/styles.css?v=3" />
+    <link rel="stylesheet" href="css/styles.css?v=4" />
     <script>
       // Если залип старый service worker — один раз сбрасываем кэш
       (function () {
-        var VER = "3";
+        var VER = "4";
         try {
           if (localStorage.getItem("iron-coach-ver") === VER) return;
           localStorage.setItem("iron-coach-ver", VER);
@@ -61,10 +61,10 @@
       </nav>
     </div>
 
-    <script src="js/exercises.js?v=3"></script>
-    <script src="js/muscles.js?v=3"></script>
-    <script src="js/coach.js?v=3"></script>
-    <script src="js/storage.js?v=3"></script>
-    <script src="js/app.js?v=3"></script>
+    <script src="js/exercises.js?v=4"></script>
+    <script src="js/muscles.js?v=4"></script>
+    <script src="js/coach.js?v=4"></script>
+    <script src="js/storage.js?v=4"></script>
+    <script src="js/app.js?v=4"></script>
   </body>
 </html>

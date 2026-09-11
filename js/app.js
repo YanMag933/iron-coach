@@ -192,7 +192,7 @@
           const unit = item.timed ? "сек" : "повт";
           return `
           <button type="button" class="ex-card" data-ex="${ex.id}">
-            <div class="ex-thumb">${window.MuscleMap.poseGlyph(ex.pose)}</div>
+            ${window.MuscleMap.thumbHtml(ex.id)}
             <div class="ex-meta">
               <h3>${escapeHtml(ex.name)}</h3>
               <p>${escapeHtml(item.note)}</p>
@@ -262,16 +262,12 @@
       <h2 style="font-size:34px">${escapeHtml(ex.name)}</h2>
       <p>${escapeHtml(ex.standard)}</p>
     </section>
-    <div class="panel muscle-wrap anim-in">
-      ${window.MuscleMap.render({ primary: ex.primary, secondary: ex.secondary })}
-      <div class="legend">
-        <span><i class="dot primary"></i>Основные</span>
-        <span><i class="dot secondary"></i>Вспомогательные</span>
-      </div>
-    </div>
-    <div class="panel anim-in" style="margin-top:12px">
-      <div class="row between"><span class="tag red">${escapeHtml(primary)}</span></div>
-      <p class="small muted" style="margin:8px 0 0">Также: ${escapeHtml(secondary)}</p>
+    <div class="panel anim-in">
+      ${window.MuscleMap.detailHtml(
+        ex.id,
+        escapeHtml(primary),
+        escapeHtml(secondary)
+      )}
     </div>
     <div class="panel anim-in">
       <h3 style="margin:0 0 10px;font-size:15px">Как делать</h3>
@@ -314,8 +310,11 @@
       <div class="stat-box"><strong>${load.reps[0]}–${load.reps[1]}</strong><span>${unit}</span></div>
       <div class="stat-box"><strong>${load.weight}</strong><span>кг</span></div>
     </div>
-    <div class="panel muscle-wrap anim-in" style="margin-top:12px">
-      ${window.MuscleMap.render({ primary: ex.primary, secondary: ex.secondary })}
+    <div class="panel anim-in" style="margin-top:12px;padding:0;overflow:hidden">
+      ${window.MuscleMap.formUrl(ex.id) ? `<img class="workout-hero" src="${window.MuscleMap.formUrl(ex.id)}" alt="" />` : ""}
+    </div>
+    <div class="panel anim-in" style="margin-top:12px">
+      ${window.MuscleMap.musclesOnlyHtml(ex.id)}
     </div>
     <div class="panel stack anim-in" style="margin-top:12px">
       <div class="row between small muted"><span>Вес</span><span>${unit}</span><span>RIR</span><span></span></div>
@@ -451,7 +450,7 @@
                 const ex = window.EXERCISE_BY_ID[item.exerciseId];
                 const load = loadFor(item);
                 return `<button type="button" class="ex-card" data-ex="${ex.id}">
-                  <div class="ex-thumb">${window.MuscleMap.poseGlyph(ex.pose)}</div>
+                  ${window.MuscleMap.thumbHtml(ex.id)}
                   <div class="ex-meta">
                     <h3>${escapeHtml(ex.name)}</h3>
                     <p>${load.sets}×${load.reps[0]}–${load.reps[1]} · ${load.weight} кг</p>
