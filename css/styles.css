@@ -84,11 +84,12 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 10px;
+  /* Зазор под статус-бар / вырез камеры — минимум, даже если safe-area = 0 */
+  padding: max(40px, calc(env(safe-area-inset-top, 0px) + 14px)) 16px 12px;
   position: sticky;
   top: 0;
   z-index: 5;
-  background: linear-gradient(180deg, rgba(7, 7, 7, 0.96) 0%, rgba(7, 7, 7, 0.82) 70%, transparent);
+  background: linear-gradient(180deg, rgba(7, 7, 7, 0.98) 0%, rgba(7, 7, 7, 0.88) 72%, transparent);
   backdrop-filter: blur(14px);
 }
 
