@@ -40,10 +40,10 @@
 
   function escapeHtml(str) {
     return String(str)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;");
+      .split("&").join("&amp;")
+      .split("<").join("&lt;")
+      .split(">").join("&gt;")
+      .split('"').join("&quot;");
   }
 
   function setNavVisible(on) {
@@ -552,7 +552,16 @@
   }
 
   /* ---------- Nav / install / SW ---------- */
-  nav.addEventListener("click", (e) => {
+  try {
+    render();
+  } catch (err) {
+    console.error(err);
+    if (app) {
+      app.innerHTML = `<div class="panel"><p>Ошибка запуска: ${escapeHtml(err && err.message ? err.message : String(err))}</p><button type="button" class="btn block" onclick="location.reload()">Обновить</button></div>`;
+    }
+  }
+
+  nav?.addEventListener("click", (e) => {
     const btn = e.target.closest(".nav-btn");
     if (!btn) return;
     tab = btn.dataset.tab;
@@ -563,22 +572,20 @@
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    installBtn.hidden = false;
+    if (installBtn) installBtn.hidden = false;
   });
 
-  installBtn.addEventListener("click", async () => {
+  installBtn?.addEventListener("click", async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
     await deferredPrompt.userChoice;
     deferredPrompt = null;
-    installBtn.hidden = true;
+    if (installBtn) installBtn.hidden = true;
   });
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js").catch(() => {});
+      navigator.serviceWorker.register("./sw.js?v=3").catch(() => {});
     });
   }
-
-  render();
 })();
