@@ -84,7 +84,7 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 14px 16px 10px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 10px;
   position: sticky;
   top: 0;
   z-index: 5;
