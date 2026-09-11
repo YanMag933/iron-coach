@@ -88,10 +88,11 @@
     return `
     <section class="hero-block anim-in">
       <h2>Твой<br>личный<br><span style="color:var(--red)">тренер</span></h2>
-      <p>Программа на турнике со своим весом, техника и подсветка мышц. Данные только на этом телефоне.</p>
+      <p>Анкету заполни честно — от неё зависит программа, веса блинов и объём.</p>
     </section>
     <form id="onboard-form" class="stack anim-in">
       <div class="panel stack">
+        <p class="eyebrow">О тебе</p>
         <label class="field">Имя
           <input name="name" required maxlength="40" value="${escapeHtml(p.name)}" placeholder="Как к тебе обращаться" />
         </label>
@@ -99,19 +100,46 @@
           <label class="field">Вес тела, кг
             <input name="bodyweight" type="number" min="40" max="200" step="0.5" required value="${p.bodyweight}" />
           </label>
+          <label class="field">Опыт
+            <select name="experience">
+              ${Object.entries(window.Coach.experienceLabels)
+                .map(([k, v]) => `<option value="${k}" ${(p.experience || "intermediate") === k ? "selected" : ""}>${v}</option>`)
+                .join("")}
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="panel stack">
+        <p class="eyebrow">Сила сейчас</p>
+        <div class="grid-2">
           <label class="field">Макс. подтягивания
             <input name="pullupMax" type="number" min="0" max="50" step="1" required value="${p.pullupMax}" />
           </label>
+          <label class="field">Макс. брусья (повт)
+            <input name="dipMax" type="number" min="0" max="50" step="1" value="${p.dipMax ?? 10}" />
+          </label>
         </div>
-        <label class="field">Макс. вес на поясе (если есть), кг
+        <label class="field">Макс. вес на поясе, кг
           <input name="weightedMax" type="number" min="0" max="100" step="0.5" value="${p.weightedMax}" />
         </label>
+      </div>
+
+      <div class="panel stack">
+        <p class="eyebrow">Как тренируешься</p>
         <div class="grid-2">
           <label class="field">Дней в неделю
             <select name="daysPerWeek">
-              ${[2, 3, 4].map((d) => `<option value="${d}" ${p.daysPerWeek === d ? "selected" : ""}>${d}</option>`).join("")}
+              ${[2, 3, 4].map((d) => `<option value="${d}" ${Number(p.daysPerWeek) === d ? "selected" : ""}>${d}</option>`).join("")}
             </select>
           </label>
+          <label class="field">Минут на тренировку
+            <select name="sessionMinutes">
+              ${[30, 45, 60].map((m) => `<option value="${m}" ${Number(p.sessionMinutes || 45) === m ? "selected" : ""}>${m}</option>`).join("")}
+            </select>
+          </label>
+        </div>
+        <div class="grid-2">
           <label class="field">Цель
             <select name="goal">
               ${Object.entries(window.Coach.goals)
@@ -119,40 +147,97 @@
                 .join("")}
             </select>
           </label>
+          <label class="field">Акцент
+            <select name="focus">
+              ${Object.entries(window.Coach.focusLabels)
+                .map(([k, v]) => `<option value="${k}" ${(p.focus || "balanced") === k ? "selected" : ""}>${v}</option>`)
+                .join("")}
+            </select>
+          </label>
         </div>
-        <label class="field" style="display:flex;gap:10px;align-items:center;color:var(--text)">
-          <input type="checkbox" name="hasBelt" ${p.hasBelt ? "checked" : ""} style="width:auto" />
+      </div>
+
+      <div class="panel stack">
+        <p class="eyebrow">Инвентарь</p>
+        <label class="field check-row">
+          <input type="checkbox" name="hasBelt" ${p.hasBelt ? "checked" : ""} />
           Есть пояс / отягощение
         </label>
-        <label class="field" style="display:flex;gap:10px;align-items:center;color:var(--text)">
-          <input type="checkbox" name="hasDips" ${p.hasDips !== false ? "checked" : ""} style="width:auto" />
+        <label class="field check-row">
+          <input type="checkbox" name="hasDips" ${p.hasDips !== false ? "checked" : ""} />
           Есть брусья
         </label>
-        <label class="field" style="display:flex;gap:10px;align-items:center;color:var(--text)">
-          <input type="checkbox" name="hasPlates" ${p.hasPlates !== false ? "checked" : ""} style="width:auto" />
+        <label class="field check-row">
+          <input type="checkbox" name="hasPlates" id="has-plates" ${p.hasPlates !== false ? "checked" : ""} />
           Есть блины / диск
         </label>
+        <div id="plates-block" class="stack" ${p.hasPlates === false ? "hidden" : ""}>
+          <p class="muted small">Отметь только те веса, которые реально есть. Программа не будет просить 5 или 10 кг, если их нет.</p>
+          <div class="plate-picks">
+            ${window.Coach.plateOptions
+              .map((w) => {
+                const selected = (p.availablePlates || [15, 20, 25]).map(Number).includes(w);
+                return `<label class="plate-chip"><input type="checkbox" name="plates" value="${w}" ${selected ? "checked" : ""} /><span>${w} кг</span></label>`;
+              })
+              .join("")}
+          </div>
+        </div>
       </div>
+
+      <div class="panel stack">
+        <p class="eyebrow">Ограничения (если есть)</p>
+        ${[
+          ["shoulder", "Плечо"],
+          ["elbow", "Локоть"],
+          ["lower_back", "Поясница"],
+          ["knee", "Колено"],
+        ]
+          .map(([id, label]) => {
+            const on = (p.injuries || []).includes(id);
+            return `<label class="field check-row"><input type="checkbox" name="injury" value="${id}" ${on ? "checked" : ""} /> ${label}</label>`;
+          })
+          .join("")}
+      </div>
+
       <button class="btn block pulse" type="submit">Собрать программу</button>
       <p class="danger-note">${escapeHtml(window.Coach.safetyNote())}</p>
     </form>`;
   }
 
   function bindOnboarding() {
+    const platesBlock = $("#plates-block");
+    $("#has-plates")?.addEventListener("change", (e) => {
+      if (platesBlock) platesBlock.hidden = !e.target.checked;
+    });
+
     $("#onboard-form")?.addEventListener("submit", (e) => {
       e.preventDefault();
       const fd = new FormData(e.target);
+      const hasPlates = fd.get("hasPlates") === "on";
+      const availablePlates = hasPlates
+        ? fd.getAll("plates").map(Number).filter((n) => n > 0).sort((a, b) => a - b)
+        : [];
+      if (hasPlates && !availablePlates.length) {
+        alert("Отметь хотя бы один вес блина, который у тебя есть.");
+        return;
+      }
       state.profile = {
         ...state.profile,
         name: String(fd.get("name") || "").trim(),
         bodyweight: Number(fd.get("bodyweight")),
         pullupMax: Number(fd.get("pullupMax")),
+        dipMax: Number(fd.get("dipMax") || 0),
         weightedMax: Number(fd.get("weightedMax") || 0),
         daysPerWeek: Number(fd.get("daysPerWeek")),
+        sessionMinutes: Number(fd.get("sessionMinutes") || 45),
         goal: String(fd.get("goal")),
+        experience: String(fd.get("experience") || "intermediate"),
+        focus: String(fd.get("focus") || "balanced"),
+        injuries: fd.getAll("injury").map(String),
         hasBelt: fd.get("hasBelt") === "on",
         hasDips: fd.get("hasDips") === "on",
-        hasPlates: fd.get("hasPlates") === "on",
+        hasPlates,
+        availablePlates,
         onboarded: true,
         createdAt: state.profile.createdAt || new Date().toISOString(),
       };
@@ -381,7 +466,7 @@
         });
       });
 
-      const advice = window.Coach.nextLoad(load, item.sets);
+      const advice = window.Coach.nextLoad(load, item.sets, state.profile);
       state.loads[item.exerciseId] = {
         weight: advice.weight,
         reps: advice.reps,
@@ -522,11 +607,22 @@
       <p>${escapeHtml(window.Coach.goals[p.goal] || "")} · ${p.bodyweight} кг · ${p.daysPerWeek} дн/нед</p>
     </section>
     <div class="panel stack anim-in">
+      <div class="row between"><span class="muted">Опыт</span><strong>${escapeHtml(window.Coach.experienceLabels[p.experience] || "—")}</strong></div>
+      <div class="row between"><span class="muted">Акцент</span><strong>${escapeHtml(window.Coach.focusLabels[p.focus] || "—")}</strong></div>
+      <div class="row between"><span class="muted">Сессия</span><strong>${p.sessionMinutes || 45} мин</strong></div>
       <div class="row between"><span class="muted">Подтягивания макс</span><strong>${p.pullupMax}</strong></div>
+      <div class="row between"><span class="muted">Брусья макс</span><strong>${p.dipMax ?? "—"}</strong></div>
       <div class="row between"><span class="muted">Weighted макс</span><strong>${p.weightedMax} кг</strong></div>
       <div class="row between"><span class="muted">Пояс</span><strong>${p.hasBelt ? "да" : "нет"}</strong></div>
       <div class="row between"><span class="muted">Брусья</span><strong>${p.hasDips !== false ? "да" : "нет"}</strong></div>
-      <div class="row between"><span class="muted">Блины</span><strong>${p.hasPlates !== false ? "да" : "нет"}</strong></div>
+      <div class="row between"><span class="muted">Блины</span><strong>${
+        p.hasPlates === false
+          ? "нет"
+          : (p.availablePlates || []).length
+            ? (p.availablePlates || []).join(" / ") + " кг"
+            : "да"
+      }</strong></div>
+      ${(p.injuries || []).length ? `<div class="row between"><span class="muted">Ограничения</span><strong>${(p.injuries || []).join(", ")}</strong></div>` : ""}
     </div>
     <div class="stack" style="margin-top:12px">
       <button type="button" class="btn secondary block" id="edit-profile">Изменить анкету</button>
@@ -590,7 +686,7 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js?v=5").catch(() => {});
+      navigator.serviceWorker.register("./sw.js?v=6").catch(() => {});
     });
   }
 })();

@@ -1,4 +1,4 @@
-const CACHE = "iron-coach-v5";
+const CACHE = "iron-coach-v6";
 const ASSETS = [
   "./",
   "./index.html",

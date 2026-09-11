@@ -307,6 +307,49 @@ label.field {
   gap: 10px;
 }
 
+label.field.check-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--text);
+  font-weight: 600;
+}
+
+label.field.check-row input {
+  width: auto;
+  margin: 0;
+}
+
+.plate-picks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.plate-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.plate-chip input {
+  width: auto;
+  margin: 0;
+}
+
+.plate-chip:has(input:checked) {
+  border-color: var(--red);
+  box-shadow: 0 0 0 1px var(--red);
+}
+
 .ex-card {
   display: grid;
   grid-template-columns: 84px 1fr;
