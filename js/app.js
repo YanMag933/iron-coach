@@ -2,7 +2,6 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const app = $("#app");
   const shell = $("#shell");
-  const boot = $("#boot");
   const nav = $("#bottom-nav");
   const topTitle = $("#top-title");
   const installBtn = $("#install-btn");
@@ -47,17 +46,11 @@
       .replaceAll('"', "&quot;");
   }
 
-  function showShell() {
-    boot.hidden = true;
-    shell.hidden = false;
-  }
-
   function setNavVisible(on) {
     nav.hidden = !on;
   }
 
   function render() {
-    showShell();
     if (!state.profile.onboarded || view === "onboarding") {
       setNavVisible(false);
       topTitle.textContent = "IRON COACH";

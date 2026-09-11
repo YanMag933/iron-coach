@@ -13,12 +13,17 @@
   --radius: 16px;
   --safe-b: env(safe-area-inset-bottom, 0px);
   --nav-h: 68px;
-  --font-display: "Bebas Neue", Impact, sans-serif;
-  --font-body: "Manrope", "Segoe UI", sans-serif;
+  --font-display: "Arial Black", "Helvetica Neue", Impact, sans-serif;
+  --font-body: "Segoe UI", "Helvetica Neue", Tahoma, sans-serif;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* display:grid/flex на .boot/.shell перебивают нативный [hidden] — без этого вечный «Загрузка…» */
+[hidden] {
+  display: none !important;
 }
 
 html,
