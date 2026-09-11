@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#070707" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="description" content="Личный фитнес-коуч: турник, брусья, блины, пресс" />
     <title>IRON COACH</title>
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="icon.svg" />
-    <link rel="stylesheet" href="css/styles.css?v=6" />
+    <link rel="apple-touch-icon" href="assets/logo-icon.png" />
+    <link rel="stylesheet" href="css/fonts.css?v=7" />
+    <link rel="stylesheet" href="css/styles.css?v=7" />
     <script>
-      // Если залип старый service worker — один раз сбрасываем кэш
       (function () {
-        var VER = "6";
+        var VER = "7";
         try {
           if (localStorage.getItem("iron-coach-ver") === VER) return;
           localStorage.setItem("iron-coach-ver", VER);
@@ -36,9 +36,12 @@
   <body>
     <div id="shell" class="shell">
       <header class="topbar">
-        <div>
-          <p class="eyebrow">PERSONAL TRAINER</p>
-          <h1 id="top-title">IRON COACH</h1>
+        <div class="brand-lockup">
+          <img class="brand-mark" src="assets/logo-icon.png" width="44" height="44" alt="IRON COACH" />
+          <div class="brand-text">
+            <p class="eyebrow">Iron Coach</p>
+            <h1 id="top-title" class="page-heading">Сегодня</h1>
+          </div>
         </div>
         <button type="button" id="install-btn" class="btn ghost" hidden>Установить</button>
       </header>
@@ -47,24 +50,36 @@
 
       <nav id="bottom-nav" class="bottom-nav" aria-label="Разделы" hidden>
         <button type="button" class="nav-btn active" data-tab="today">
-          <span class="nav-ico" aria-hidden="true">◆</span><span>Сегодня</span>
+          <span class="nav-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19V9l8-5 8 5v10"/><path d="M9 19v-6h6v6"/></svg>
+          </span>
+          <span>Сегодня</span>
         </button>
         <button type="button" class="nav-btn" data-tab="program">
-          <span class="nav-ico" aria-hidden="true">☰</span><span>Программа</span>
+          <span class="nav-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M9 6h11"/><path d="M9 12h11"/><path d="M9 18h11"/><circle cx="5" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="5" cy="18" r="1" fill="currentColor" stroke="none"/></svg>
+          </span>
+          <span>Программа</span>
         </button>
         <button type="button" class="nav-btn" data-tab="log">
-          <span class="nav-ico" aria-hidden="true">≡</span><span>Журнал</span>
+          <span class="nav-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8"/><path d="M8 13h8"/><path d="M8 17h5"/></svg>
+          </span>
+          <span>Журнал</span>
         </button>
         <button type="button" class="nav-btn" data-tab="profile">
-          <span class="nav-ico" aria-hidden="true">◎</span><span>Профиль</span>
+          <span class="nav-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="3.2"/><path d="M5.5 19c1.6-3 4-4.5 6.5-4.5S16.9 16 18.5 19"/></svg>
+          </span>
+          <span>Профиль</span>
         </button>
       </nav>
     </div>
 
-    <script src="js/exercises.js?v=6"></script>
-    <script src="js/muscles.js?v=6"></script>
-    <script src="js/coach.js?v=6"></script>
-    <script src="js/storage.js?v=6"></script>
-    <script src="js/app.js?v=6"></script>
+    <script src="js/exercises.js?v=7"></script>
+    <script src="js/muscles.js?v=7"></script>
+    <script src="js/coach.js?v=7"></script>
+    <script src="js/storage.js?v=7"></script>
+    <script src="js/app.js?v=7"></script>
   </body>
 </html>
